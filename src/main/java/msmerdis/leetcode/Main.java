@@ -17,7 +17,7 @@ public class Main {
 			try {
 				status = runner.invoke(tc) ? "success" : "failure";
 			} catch (Exception e) {
-				status = "exception: " + e.getMessage();
+				status = e.getClass().getSimpleName() + ": " + e.getMessage();
 			}
 			System.out.println(String.format("Test case %d : %s", tc.getId(), status));
 		}
