@@ -4,6 +4,7 @@ import java.util.List;
 
 import msmerdis.leetcode.SolutionRunner;
 import msmerdis.leetcode.SolutionTestCase;
+import msmerdis.leetcode.common.TreeNode;
 
 public class Solution implements SolutionRunner {
 
