@@ -1,5 +1,7 @@
 package msmerdis.leetcode.common;
 
+import java.util.ArrayList;
+
 public class TreeNode {
 	public int val;
 	public TreeNode left;
@@ -17,6 +19,31 @@ public class TreeNode {
 		this.val = val;
 		this.left = left;
 		this.right = right;
+	}
+
+	public Integer[] toArray() {
+		ArrayList<Integer> list = new ArrayList<>();
+
+		toArray (this, 0, list);
+
+		return list.toArray(new Integer[list.size()]);
+	}
+
+	public static void toArray (TreeNode tree, int index, ArrayList<Integer> list) {
+		while (list.size() <= index) {
+			list.add(null);
+		}
+		list.set(index, tree.val);
+
+		index <<= 1;
+
+		if (tree.left != null) {
+			toArray (tree.left, index + 1, list);
+		}
+
+		if (tree.right != null) {
+			toArray (tree.right, index + 2, list);
+		}
 	}
 
 	public static TreeNode of (Integer[] tree) {
