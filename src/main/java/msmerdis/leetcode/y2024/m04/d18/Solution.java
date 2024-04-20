@@ -98,155 +98,67 @@ public class Solution implements SolutionRunner {
 
 	public int islandPerimeter(int[][] grid) {
 		int p = 0;
-		int l = grid[0].length;
 
-		if (grid.length == 0 || l == 0) {
-			return 0;
+		int[] prev = new int[0];
+
+		for (int i = 0; i < grid.length; i += 1) {
+			p += islandPerimeter (prev, grid[i]);
+			p += islandPerimeter (grid[i]);
+			prev = grid[i];
 		}
+		p += islandPerimeter (prev, new int[0]);
+		return p;
+	}
 
-		for (int i = 1; i + 1 < grid.length; i += 1) {
-			for (int j = 1; j + 1 < l; j += 1) {
-				if (grid[i][j] > 0) {
-					// check box above
-					if (grid[i-1][j] == 0) p += 1;
-
-					// check box below
-					if (grid[i+1][j] == 0) p += 1;
-
-					// check box on the left
-					if (grid[i][j-1] == 0) p += 1;
-
-					// check box on the right
-					if (grid[i][j+1] == 0) p += 1;
-				}
-			}
-
-			// check left column
-			if (grid[i][0] > 0) {
-				// check box above
-				if (grid[i-1][0] == 0) p += 1;
-
-				// check box below
-				if (grid[i+1][0] == 0) p += 1;
-
-				// check box on the left
-				p += 1;
-
-				// check box on the right
-				if (l == 1 || grid[i][1] == 0) p += 1;
-			}
-
-			// check right column
-			if (l > 1 && grid[i][l-1] > 0) {
-
-				// check box above
-				if (grid[i-1][l-1] == 0) p += 1;
-
-				// check box below
-				if (grid[i+1][l-1] == 0) p += 1;
-
-				// check box on the left
-				if (grid[i][l-2] == 0) p += 1;
-
-				// check box on the right
+	// calculate the coastal boarders between two rows
+	// if both neighbors are either island or sea
+	// then no boarder is found
+	//
+	// in case one array is less than the other
+	// the island tiles in the larger array
+	// will be considered a boarder
+	private int islandPerimeter(int[] x, int[] y) {
+		int p = 0;
+		int i;
+		for (i = 0; i < x.length && i < y.length; i += 1) {
+			if ((x[i] == 0 && y[i] > 0) || (x[i] > 0 && y[i] == 0)) {
 				p += 1;
 			}
 		}
-
-		for (int i = 1; i + 1 < l; i += 1) {
-			// check top row
-			if (grid[0][i] > 0) {
-				// check box above
+		while (i < x.length) {
+			if (x[i] > 0) {
 				p += 1;
-
-				// check box below
-				if (grid.length == 1 || grid[1][i] == 0) p += 1;
-
-				// check box on the left
-				if (grid[0][i-1] == 0) p += 1;
-
-				// check box on the right
-				if (grid[0][i+1] == 0) p += 1;
 			}
-
-			// check bottom row
-			if (grid.length > 1 && grid[grid.length-1][i] > 0) {
-				// check box above
-				if (grid[grid.length-2][i] == 0) p += 1;
-
-				// check box below
+			i += 1;
+		}
+		while (i < y.length) {
+			if (y[i] > 0) {
 				p += 1;
-
-				// check box on the left
-				if (grid[grid.length-1][i-1] == 0) p += 1;
-
-				// check box on the right
-				if (grid[grid.length-1][i+1] == 0) p += 1;
 			}
+			i += 1;
+		}
+		return p;
+	}
+
+	// calculate the coastal boarders in a row
+	// Similarly to the boarder between rows
+	// if both neighbors are either island or sea
+	// then no boarder is found
+	private int islandPerimeter(int[] r) {
+		int p = 0;
+		int i;
+		int prev = 0;
+
+		for (i = 0; i < r.length; i += 1) {
+			if ((prev == 0 && r[i] > 0) || (prev > 0 && r[i] == 0)) {
+				p += 1;
+			}
+			prev = r[i];
 		}
 
-		// check the four corners
-
-		// top left
-		if (grid[0][0] == 1) {
-			// check box above
-			p += 1;
-
-			// check box below
-			if (grid.length == 1 || grid[1][0] == 0) p += 1;
-
-			// check box on the left
-			p += 1;
-
-			// check box on the right
-			if (l == 1 || grid[0][1] == 0) p += 1;
-		}
-
-		// top right
-		if (l > 1 && grid[0][l-1] == 1) {
-			// check box above
-			p += 1;
-
-			// check box below
-			if (grid.length == 1 || grid[1][l-1] == 0) p += 1;
-
-			// check box on the left
-			if (grid[0][l-2] == 0) p += 1;
-
-			// check box on the right
+		if (prev > 0) {
 			p += 1;
 		}
-
-		// bottom right
-		if (grid.length > 1 && l > 1 && grid[grid.length-1][l-1] == 1) {
-			// check box above
-			if (grid[grid.length-2][l-1] == 0) p += 1;
-
-			// check box below
-			p += 1;
-
-			// check box on the left
-			if (grid[grid.length-1][l-2] == 0) p += 1;
-
-			// check box on the right
-			p += 1;
-		}
-
-		// bottom left
-		if (grid.length > 1 && grid[grid.length-1][0] == 1) {
-			// check box above
-			if (grid[grid.length-2][0] == 0) p += 1;
-
-			// check box below
-			p += 1;
-
-			// check box on the left
-			p += 1;
-
-			// check box on the right
-			if (l == 1 || grid[grid.length-1][1] == 0) p += 1;
-		}
-
 		return p;
 	}
 }

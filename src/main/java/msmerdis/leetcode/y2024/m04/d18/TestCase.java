@@ -13,15 +13,8 @@ public class TestCase implements SolutionTestCase {
 	public TestCase (String[] matrix, int perimeter) {
 		ID_ASSIGN += 1;
 		this.id = ID_ASSIGN;
-		this.matrix = new int[matrix.length][];
+		this.matrix = toIntMatrix(matrix);
 		this.perimeter =  perimeter;
-		
-		for (int i = 0; i < matrix.length; i += 1) {
-			this.matrix[i] = new int[matrix[i].length()];
-			for (int j = 0; j < matrix[i].length(); j += 1) {
-				this.matrix[i][j] = matrix[i].charAt(j) - '0';
-			}
-		}
 	}
 
 	@Override
