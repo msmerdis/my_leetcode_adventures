@@ -47,20 +47,7 @@ public class Main {
 	}
 
 	public static void exec (LocalDate date) throws ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
-		exec(getRunner(date));
-	}
-
-	public static void exec (SolutionRunner runner) {
-		for (SolutionTestCase tc : runner.testCases()) {
-			String status;
-			try {
-				status = runner.invoke(tc) ? "success" : "failure";
-			} catch (Exception e) {
-				status = e.getClass().getSimpleName() + ": " + e.getMessage();
-				e.printStackTrace();
-			}
-			System.out.println(String.format("Test case %d : %s", tc.getId(), status));
-		}
+		getRunner(date).exec();
 	}
 
 }

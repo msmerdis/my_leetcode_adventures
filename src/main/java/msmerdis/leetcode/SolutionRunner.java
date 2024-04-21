@@ -28,4 +28,17 @@ public interface SolutionRunner {
 		}
 		return true;
 	}
+
+	public default void exec () {
+		for (SolutionTestCase tc : testCases()) {
+			String status;
+			try {
+				status = invoke(tc) ? "success" : "failure";
+			} catch (Exception e) {
+				status = e.getClass().getSimpleName() + ": " + e.getMessage();
+				e.printStackTrace();
+			}
+			System.out.println(String.format("Test case %d : %s", tc.getId(), status));
+		}
+	}
 }
